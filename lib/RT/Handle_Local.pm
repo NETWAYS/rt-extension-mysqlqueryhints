@@ -3,11 +3,13 @@ no warnings qw(redefine);
 package RT::Handle;
 
 use RT::Interface::Web;
+use RT::Extension::MySQLQueryHints qw/parse_int/;
 
 my $group_prefix    = RT->Config->Get('QueryHint_Group_Prefix') // 'RT_User_';
 my $group_default   = RT->Config->Get('QueryHint_Group_Default') // 'RT_User_Default';
 my $group_disable   = RT->Config->Get('QueryHint_Group_Disable') // '';
-my $group_use_id    = RT->Config->Get('QueryHint_Group_UID') // '';
+my $group_use_id    = RT->Config->Get('QueryHint_Group_Use_User_Id') // '';
+my $execution_time  = RT->Config->Get('QueryHint_Max_Execution_Time') // '';
 
 my $type = RT->Config->Get('DatabaseType');
 
@@ -18,6 +20,13 @@ sub SimpleQuery {
     my $query_insert = '';
 
     if ($type eq 'mysql') {
+        if ($execution_time) {
+            $execution_time = parse_int($execution_time);
+            if ($execution_time > 0) {
+                $query_insert .= sprintf('/*+ MAX_EXECUTION_TIME(%d) */', $execution_time);
+            }
+        }
+
         unless ($group_disable) {
             my $groupName = $group_default;
 
@@ -33,6 +42,7 @@ sub SimpleQuery {
 
             }
 
+            $query_insert .= ' ' if ($query_insert);
             $query_insert .= sprintf('/*+ RESOURCE_GROUP(%s) */', $groupName);
         }
 
