@@ -1,15 +1,23 @@
+  parse_int($input);
+    Return an integer based on the input or -1 if conversion has failed
+
 NAME
-    RT-Extension-MySQLQueryHints - [One line description of module's purpose
-    here]
+    RT-Extension-MySQLQueryHints - Add MySQL optimizer hints to RT queries
 
 DESCRIPTION
-    [Why would someone install this extension? What does it do? What problem
-    does it solve?]
+    Identify queries created by users and control resources.
 
+    This plugin adds mysql optimizer hints to the queries:
+
+MYSQL SLOW QUERY LOG
+# mysqldumpslow -t 10
+Count: 3  Time=0.00s (0s)  Lock=0.00s (0s)  Rows_sent=1.0 (3), Rows_examined=1.0 (3), rt_user[rt_user]@localhost
+  SELECT /*+ MAX_EXECUTION_TIME(N) */ /*+ RESOURCE_GROUP(RT_User_14322) */ * FROM Tickets WHERE id = 'S' FOR UPDATE
+Count: 35  Time=0.00s (0s)  Lock=0.00s (0s)  Rows_sent=1.9 (68), Rows_examined=1.4 (48), rt_user[rt_user]@localhost
+  SELECT /*+ MAX_EXECUTION_TIME(N) */ /*+ RESOURCE_GROUP(RT_User_14322) */ main.* FROM Attributes main  WHERE
+  (main.ObjectId = N) AND (main.ObjectType = 'S')  ORDER BY main.id ASC
 RT VERSION
-    Works with RT [What versions of RT is this known to work with?]
-
-    [Make sure to use requires_rt and rt_too_new in Makefile.PL]
+    Works with RT 4.4.3.
 
 INSTALLATION
     perl Makefile.PL
@@ -27,17 +35,35 @@ INSTALLATION
 
     Restart your webserver
 
+CONFIGURATION
+  $QueryHint_Group_Disable
+    Resource groups are enabled per default. Set this to '1' to disable
+    resource groups.
+
+  $QueryHint_Group_Prefix
+    Prefix of the resource group. Default is RT_User_.
+
+  $QueryHint_Group_Default
+    If the query is not user initiated (cli, while login), this resource
+    group is added. Default is RT_User_Default
+
+  $QueryHint_Group_Use_User_Id
+    Per default the user name is added to group prefix. Set this to '1' to
+    add user id's instead.
+
+  $QueryHint_Max_Execution_Time
+    Add MAX_EXECUTION_TIME(milliseconds) optimizer hint. Value must be
+    integer and represents milliseconds.
+
 AUTHOR
-    Best Practical Solutions, LLC <modules@bestpractical.com>
+    NETWAYS GmbH <support@netways.de>
 
-    All bugs should be reported via email to
-        bug-RT-Extension-MySQLQueryHints@rt.cpan.org
-    or via the web at
-        http://rt.cpan.org/Public/Dist/Display.html?Name=RT-Extension-MySQLQueryHints
+BUGS
+    All bugs should be reported on GitHub
+    <https://github.com/NETWAYS/rt-extension-ticketactions>.
+
 LICENSE AND COPYRIGHT
-    This software is Copyright (c) 2018 by NETWAYS GmbH
-
-    This is free software, licensed under:
-
-      The GNU General Public License, Version 2, June 1991
+    This software is Copyright (c) 2018 by NETWAYS GmbH This is free
+    software, licensed under: The GNU General Public License, Version 2,
+    June 1991
 
