@@ -34,7 +34,7 @@ sub SimpleQuery {
                 my $current_user = $HTML::Mason::Commands::session{'CurrentUser'};
 
                 if ($group_use_id) {
-                    $groupName = $group_prefix . ucfirst($current_user->Id);
+                    $groupName = $group_prefix . $current_user->Id;
                 }
                 else {
                     $groupName = $group_prefix . ucfirst($current_user->Name);
