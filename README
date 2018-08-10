@@ -1,6 +1,3 @@
-  parse_int($input);
-    Return an integer based on the input or -1 if conversion has failed
-
 NAME
     RT-Extension-MySQLQueryHints - Add MySQL optimizer hints to RT queries
 
@@ -9,7 +6,7 @@ DESCRIPTION
 
     This plugin adds mysql optimizer hints to the queries:
 
-MYSQL SLOW QUERY LOG
+  EXAMPLE MYSQL SLOW QUERY LOG
 # mysqldumpslow -t 10
 Count: 3  Time=0.00s (0s)  Lock=0.00s (0s)  Rows_sent=1.0 (3), Rows_examined=1.0 (3), rt_user[rt_user]@localhost
   SELECT /*+ MAX_EXECUTION_TIME(N) */ /*+ RESOURCE_GROUP(RT_User_14322) */ * FROM Tickets WHERE id = 'S' FOR UPDATE
@@ -66,4 +63,8 @@ LICENSE AND COPYRIGHT
     This software is Copyright (c) 2018 by NETWAYS GmbH This is free
     software, licensed under: The GNU General Public License, Version 2,
     June 1991
+
+METHODS
+  parse_int($input);
+    Return an integer based on the input or -1 if conversion has failed
 

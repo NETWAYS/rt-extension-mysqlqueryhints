@@ -2,24 +2,12 @@ use strict;
 use warnings;
 package RT::Extension::MySQLQueryHints;
 
-our $VERSION = '0.01';
+our $VERSION = '0.9.0';
 
 require Exporter;
 
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(parse_int);
-
-=head2 parse_int($input);
-
-Return an integer based on the input or -1 if conversion has failed
-
-=cut
-
-sub parse_int {
-    my $input = shift;
-    $input++; $input--;
-    return sprintf('%d', $input);
-}
 
 =head1 NAME
 
@@ -31,7 +19,7 @@ Identify queries created by users and control resources.
 
 This plugin adds mysql optimizer hints to the queries:
 
-=head1 MYSQL SLOW QUERY LOG
+=head2 EXAMPLE MYSQL SLOW QUERY LOG
 
 =begin text
 
@@ -112,6 +100,18 @@ This software is Copyright (c) 2018 by NETWAYS GmbH
 This is free software, licensed under:
   The GNU General Public License, Version 2, June 1991
 
+=head1 METHODS
+
+=head2 parse_int($input);
+
+Return an integer based on the input or -1 if conversion has failed
+
 =cut
+
+sub parse_int {
+    my $input = shift;
+    $input++; $input--;
+    return sprintf('%d', $input);
+}
 
 1;
