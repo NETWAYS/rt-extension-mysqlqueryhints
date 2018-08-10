@@ -92,7 +92,7 @@ NETWAYS GmbH <support@netways.de>
 
 =head1 BUGS
 
-All bugs should be reported on L<GitHub|https://github.com/NETWAYS/rt-extension-ticketactions>.
+All bugs should be reported on L<GitHub|https://github.com/NETWAYS/rt-extension-mysqlqueryhints>.
 
 =head1 LICENSE AND COPYRIGHT
 
